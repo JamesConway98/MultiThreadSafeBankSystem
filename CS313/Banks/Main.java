@@ -1,4 +1,4 @@
-package CS313.Banks;
+package Banks;
 public class Main {
 
     public static void main(String[] args) {

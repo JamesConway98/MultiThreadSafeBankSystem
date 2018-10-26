@@ -1,4 +1,4 @@
-package CS313.Banks;
+package Banks;
 public abstract class Account {
 
     int accountNum;

@@ -1,4 +1,4 @@
-package CS313.Banks;
+package Banks;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
