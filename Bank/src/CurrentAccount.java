@@ -1,4 +1,3 @@
-package Banks;
 public class CurrentAccount extends Account {
 
     public CurrentAccount() {

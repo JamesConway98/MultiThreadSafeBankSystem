@@ -1,4 +1,3 @@
-package Banks;
 public class KidsAccount extends  Account {
     /*
     Can't transfer out of kids accounts, can transfer in

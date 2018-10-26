@@ -1,7 +1,6 @@
-package Banks;
 public abstract class Account {
 
-    int accountNum;
+    int accountNum = 1001;
     double balance;
 
     public double getBalance() {

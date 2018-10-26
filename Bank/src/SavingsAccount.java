@@ -1,4 +1,3 @@
-package Banks;
 public class SavingsAccount extends Account {
 
     /*
