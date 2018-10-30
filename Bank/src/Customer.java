@@ -57,6 +57,17 @@ public class Customer implements Comparable<Customer> {
         return false;
     }
 
+    public Account getAccountByNo(int accountNo) {
+        for (Account account:myAccountList) {
+             if (account.getAccountNum() == accountNo) {
+                 return account;
+             } else {
+                 System.out.println("There is no account with number" + accountNo);
+                 return null;
+             }
+        }
+    }
+
     /*public boolean createAccounts (char accountType) {
         switch (accountType) {
             case ('C'):
@@ -128,25 +139,25 @@ public class Customer implements Comparable<Customer> {
         }
     }
 
-    public boolean deposit(int amount, int accountNo) { 
-        double result = getBalance(accountNo);
-
-        return true;
+    public void deposit(double amount, int accountNo) {
+        getAccountByNo(accountNo).deposit(amount);
     }
 
-    public boolean withdraw(int amount, Account account) {
-        return account.withdraw(amount);
-    }
-
-    /*public boolean transfer(int amount, Customer customer, int transfereeNum, Account thisAccount) {
-        List<Account> transfereeList = accountMap.get(customer);
-        for (Account account:transfereeList) {
-            if (account.getAccountNum() == transfereeNum) {
-                return thisAccount.transfer(amount, account);
-            }
+    public boolean withdraw(double amount, int accountNo) {
+        double balance = Double.parseDouble(readAccount(accountNo));
+        if (balance < amount) {
+            System.out.println("You don't have enough money in your account.");
+            return false;
+        } else {
+            System.out.println("Withdrew" + amount);
+            getAccountByNo(accountNo).withdraw(amount);
+            return true;
         }
-        return false;
-    }*/
+    }
+
+    public boolean transfer(double amount, Customer customer, int transfereeNum, int accountNo) {
+        
+    }
 
     public String readAccount(int accountNo) {
         for (Account account : myAccountList) {
@@ -184,3 +195,4 @@ public class Customer implements Comparable<Customer> {
 
 
 }
+
