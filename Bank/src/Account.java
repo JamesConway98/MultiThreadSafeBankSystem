@@ -1,7 +1,11 @@
 public abstract class Account {
 
-    int accountNum = 1001;
+    int accountNum;
     double balance;
+
+    public Account(int an) {
+        accountNum = an;
+    }
 
     public double getBalance() {
         return balance;
@@ -11,16 +15,12 @@ public abstract class Account {
         return accountNum;
     }
 
-    public boolean deposit(int amount) {
-        if (amount > balance) {
-            return false;
-        }
+    public void deposit(double amount) {
         balance += amount;
-        return true;
     }
 
-    public abstract boolean withdraw(int amount);
+    public abstract boolean withdraw(double amount);
 
-    public abstract boolean transfer(int amount, Account account);
+    public abstract boolean transfer(double amount, Account account);
 
 }

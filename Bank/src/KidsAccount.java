@@ -4,14 +4,18 @@ public class KidsAccount extends  Account {
     No withdrawals
      */
 
+    public KidsAccount(int an) {
+        super(an);
+    }
+
     @Override
-    public boolean withdraw(int amount) {
+    public boolean withdraw(double amount) {
         System.out.println("Cannot withdraw from kids' accounts.");
         return false;
     }
 
     @Override
-    public boolean transfer(int amount, Account account) {
+    public boolean transfer(double amount, Account account) {
         System.out.println("Cannot transfer from kids' accounts.");
         return false;
     }

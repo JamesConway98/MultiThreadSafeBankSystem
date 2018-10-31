@@ -4,14 +4,18 @@ public class SavingsAccount extends Account {
     NO withdrawals
      */
 
+    public SavingsAccount(int an) {
+        super(an);
+    }
+
     @Override
-    public boolean withdraw(int amount) {
+    public boolean withdraw(double amount) {
         System.out.println("Cannot withdraw from savings' accounts.");
         return false;
     }
 
     @Override
-    public boolean transfer(int amount, Account account) {
+    public boolean transfer(double amount, Account account) {
         if (balance > amount) {
             balance = balance - amount;
             account.deposit(amount);

@@ -13,7 +13,7 @@ public class Customer implements Comparable<Customer> {
 
     List<Account> myAccountList = new ArrayList<>();
 
-    public Customer(String username, String password){
+    public Customer(String username, String password) {
         this.username = username;
         this.password = password;
     }
@@ -30,15 +30,15 @@ public class Customer implements Comparable<Customer> {
         return id;
     }
 
-    public void editName(String newName){
+    public void editName(String newName) {
         username = newName;
     }
 
-    public void setUsername(String username){
+    public void setUsername(String username) {
         this.username = username;
     }
 
-    public void setPassword(String password){
+    public void setPassword(String password) {
         this.password = password;
 
     }
@@ -50,7 +50,7 @@ public class Customer implements Comparable<Customer> {
         return false;
     }
 
-    private boolean checkPassword(String password){
+    private boolean checkPassword(String password) {
         if (this.password == password) {
             return true;
         }
@@ -58,36 +58,35 @@ public class Customer implements Comparable<Customer> {
     }
 
     public Account getAccountByNo(int accountNo) {
-        for (Account account:myAccountList) {
-             if (account.getAccountNum() == accountNo) {
-                 return account;
-             } else {
-                 System.out.println("There is no account with number" + accountNo);
-                 return null;
-             }
+        for (Account account : myAccountList) {
+            if (account.getAccountNum() == accountNo) {
+                return account;
+            } else {
+                System.out.println("There is no account with number" + accountNo);
+            }
         }
+        return null;
     }
 
-    /*public boolean createAccounts (char accountType) {
+    public boolean addAccount(char accountType, int accountNumber) {
+        Account newAccount;
         switch (accountType) {
-            case ('C'):
-                Account currentAccount = new CurrentAccount();
-                myAccountList.add(currentAccount);
+            case ('k'):
+                newAccount = new KidsAccount(accountNumber);
                 break;
-            case ('K'):
-                Account kidsAccount = new KidsAccount();
-                myAccountList.add(kidsAccount);
+            case ('s'):
+                newAccount = new SavingsAccount(accountNumber);
                 break;
-            case ('S'):
-                Account savingsAccount = new SavingsAccount();
-                myAccountList.add(savingsAccount);
+            case ('c'):
+                newAccount = new CurrentAccount(accountNumber);
                 break;
             default:
+                System.out.println("Error");
                 return false;
         }
-        addToMap();
+        myAccountList.add(newAccount);
         return true;
-    }*/
+    }
 
     /*public void addToMap() {
         if (!accountMap.containsKey(this))
@@ -98,10 +97,9 @@ public class Customer implements Comparable<Customer> {
     }*/
 
 
-    public List<Account> getAccountList(){
+    public List<Account> getAccountList() {
         return myAccountList;
     }
-
 
 
     /*public void logIn(String username, String password) {
@@ -121,27 +119,19 @@ public class Customer implements Comparable<Customer> {
 
     }*/
 
-    public double getBalance(int accountNo) {
-
-        myAccountList.add(new SavingsAccount());
-
-        String result = readAccount(accountNo);
-
-        if (!result.isEmpty()) {
-            return Double.parseDouble(result);
-        }
-        return -1;
+    public void getBalance(int accountNo) {
+        System.out.println(getAccountByNo(accountNo).getBalance());
     }
 
-    public void printBalance(int accountNo) {
+   /* public void printBalance(int accountNo) {
         if(getBalance(accountNo) != -1) {
             System.out.println(getBalance(accountNo));
         }
     }
 
-    public void deposit(double amount, int accountNo) {
+    */public void deposit(double amount, int accountNo) {
         getAccountByNo(accountNo).deposit(amount);
-    }
+    }/*
 
     public boolean withdraw(double amount, int accountNo) {
         double balance = Double.parseDouble(readAccount(accountNo));
@@ -182,7 +172,7 @@ public class Customer implements Comparable<Customer> {
         }
         System.out.println("STOP, THIEF!");
         return "";
-    }
+    }*/
 
     @Override
     public int compareTo(Customer customer) {

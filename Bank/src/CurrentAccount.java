@@ -1,10 +1,11 @@
 public class CurrentAccount extends Account {
 
-    public CurrentAccount() {
+    public CurrentAccount(int an) {
+        super(an);
     }
 
     @Override
-    public boolean withdraw(int amount) {
+    public boolean withdraw(double amount) {
         if (balance > amount) {
             balance = balance - amount;
             System.out.println("Your new balance is " + balance);
@@ -15,7 +16,7 @@ public class CurrentAccount extends Account {
     }
 
     @Override
-    public boolean transfer(int amount, Account account) {
+    public boolean transfer(double amount, Account account) {
         if (balance > amount) {
             balance = balance - amount;
             account.deposit(amount);
