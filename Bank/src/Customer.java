@@ -128,12 +128,12 @@ public class Customer implements Comparable<Customer> {
 
     public void withdraw(double amount, int accountNo) {
        getAccountByNo(accountNo).withdraw(amount);
-    }/*
-
-    public boolean transfer(double amount, Customer customer, int transfereeNum, int accountNo) {
-        
     }
 
+    public void transfer(double amount, Customer customer, int transfereeNum, int accountNo) {
+        this.getAccountByNo(accountNo).transfer(amount, customer, transfereeNum);
+    }
+/*
     public String readAccount(int accountNo) {
         for (Account account : myAccountList) {
             if (accountNo == account.getAccountNum()) {

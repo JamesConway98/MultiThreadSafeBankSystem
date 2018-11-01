@@ -14,18 +14,12 @@ public class TransferRunnable implements Runnable {
     }
 
     public void run() {
-            WithdrawRunnable wr = new WithdrawRunnable(customer1, amount, c1AccountNum);
-            Thread withdraw = new Thread(wr);
-            DepositRunnable dr = new DepositRunnable(customer2, amount, c2AccountNum);
-            Thread deposit = new Thread(dr);
-
-            withdraw.start();
             try {
-                withdraw.join();
+                customer1.transfer(amount, customer2, c2AccountNum, c1AccountNum);
+                Thread.sleep(DELAY);
             } catch (InterruptedException ie) {
                 ie.printStackTrace();
             }
-            deposit.run();
     }
 
 }

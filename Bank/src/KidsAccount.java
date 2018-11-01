@@ -10,16 +10,13 @@ public class KidsAccount extends  Account {
         super(an);
     }
 
-
+    @Override
+    public char getType() {
+        return type;
+    }
 
     @Override
     public void withdraw(double amount) {
         System.out.println("Cannot withdraw from kids' accounts.");
-    }
-
-    @Override
-    public boolean transfer(double amount, Account account) {
-        System.out.println("Cannot transfer from kids' accounts.");
-        return false;
     }
 }

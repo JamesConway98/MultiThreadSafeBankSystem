@@ -26,6 +26,9 @@ public abstract class Account {
 
     public abstract void withdraw(double amount);
 
-    public abstract boolean transfer(double amount, Account account);
+    public void transfer(double amount, Customer customer, int accountNum) {
+        balance -= amount;
+        customer.getAccountByNo(accountNum).deposit(amount);
+    }
 
 }

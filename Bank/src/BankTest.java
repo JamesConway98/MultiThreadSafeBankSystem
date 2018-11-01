@@ -81,6 +81,21 @@ public class BankTest {
 
     @Test
     public void testSavings() {
+        bank.addCustomer("james", "password");
+        bank.addAccount("james", 's', 1234);
 
+        bank.addCustomer("jams", "password");
+        bank.addAccount("jams", 'c', 5678);
+
+        bank.deposit("james", 100, 1234);
+
+        bank.withdraw("james", 50, 1234);
+
+        assertEquals(bank.getCustomerByName("james").getAccountByNo(1234).getBalance(), 100, 0.0);
+
+        bank.transfer("james", "jams", 50, 1234, 5678);
+
+        assertEquals(bank.getCustomerByName("james").getAccountByNo(1234).getBalance(), 50, 0.0);
+        assertEquals(bank.getCustomerByName("jams").getAccountByNo(5678).getBalance(), 50, 0.0);
     }
 }
