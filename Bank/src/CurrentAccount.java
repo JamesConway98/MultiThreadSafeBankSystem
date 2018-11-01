@@ -5,14 +5,8 @@ public class CurrentAccount extends Account {
     }
 
     @Override
-    public boolean withdraw(double amount) {
-        if (balance > amount) {
+    public void withdraw(double amount) {
             balance = balance - amount;
-            System.out.println("Your new balance is " + balance);
-            return true;
-        } else {
-            return false;
-        }
     }
 
     @Override

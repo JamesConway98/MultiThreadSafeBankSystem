@@ -6,6 +6,14 @@ public class Bank {
 
     List<Customer> customerList = new ArrayList<>();
 
+    public void bankWait(int duration) {
+        try {
+            Thread.sleep(duration);
+        } catch (InterruptedException ie) {
+            ie.printStackTrace();
+        }
+    }
+
     public void addCustomer(String username, String password) {
         Customer customer = new Customer(username, password);
         customerList.add(customer);
@@ -49,10 +57,37 @@ public class Bank {
         DepositRunnable dr = new DepositRunnable(cust, amount, accountNumber);
         Thread deposit = new Thread(dr);
         deposit.start();
-        System.out.println("deposit called in bank");
+        bankWait(200);
     }
 
-    public void transfer(Customer customer1, Customer customer2, double amount) {
-        TransferRunnable tr = new TransferRunnable(customer1, customer2, amount);
+    public void withdraw(String customer, double amount, int accountNumber) {
+        Customer cust = this.getCustomerByName(customer);
+        if (cust.getBalance(accountNumber) < amount) {
+            System.out.println("Insufficient funds");
+        } else {
+            WithdrawRunnable wr = new WithdrawRunnable(cust, amount, accountNumber);
+            Thread withdraw = new Thread(wr);
+            withdraw.start();
+            bankWait(200);
+        }
+    }
+
+    public void transfer(String customer1, String customer2, double amount, int accountNum1, int accountNum2) {
+        Customer cust1 = getCustomerByName(customer1);
+
+        if (cust1.getBalance(accountNum1) == null) {
+            System.out.println("You have no such account");
+            return;
+        } else if (cust1.getBalance(accountNum1) < amount) {
+            System.out.println("Insufficient funds");
+            return;
+        }
+
+        Customer cust2 = getCustomerByName(customer2);
+
+        TransferRunnable tr = new TransferRunnable(cust1, cust2, amount, accountNum1, accountNum2);
+        Thread transfer = new Thread(tr);
+        transfer.start();
+        bankWait(200);
     }
 }

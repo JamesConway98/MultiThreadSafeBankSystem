@@ -9,9 +9,8 @@ public class KidsAccount extends  Account {
     }
 
     @Override
-    public boolean withdraw(double amount) {
+    public void withdraw(double amount) {
         System.out.println("Cannot withdraw from kids' accounts.");
-        return false;
     }
 
     @Override

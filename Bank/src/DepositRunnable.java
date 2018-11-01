@@ -15,7 +15,6 @@ public class DepositRunnable implements Runnable {
     public void run() {
         try {
             customer.deposit(amount, accountNumber);
-            System.out.println("depositrunnable running");
             Thread.sleep(DELAY);
         } catch (InterruptedException ie) {
             ie.printStackTrace();

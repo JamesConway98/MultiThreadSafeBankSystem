@@ -61,8 +61,6 @@ public class Customer implements Comparable<Customer> {
         for (Account account : myAccountList) {
             if (account.getAccountNum() == accountNo) {
                 return account;
-            } else {
-                System.out.println("There is no account with number" + accountNo);
             }
         }
         return null;
@@ -88,14 +86,6 @@ public class Customer implements Comparable<Customer> {
         return true;
     }
 
-    /*public void addToMap() {
-        if (!accountMap.containsKey(this))
-            accountMap.put(this, myAccountList);
-        else {
-            accountMap.replace(this, myAccountList);
-        }
-    }*/
-
 
     public List<Account> getAccountList() {
         return myAccountList;
@@ -119,31 +109,26 @@ public class Customer implements Comparable<Customer> {
 
     }*/
 
-    public void getBalance(int accountNo) {
-        System.out.println(getAccountByNo(accountNo).getBalance());
-    }
-
-   /* public void printBalance(int accountNo) {
-        if(getBalance(accountNo) != -1) {
-            System.out.println(getBalance(accountNo));
-        }
-    }
-
-    */public void deposit(double amount, int accountNo) {
-        getAccountByNo(accountNo).deposit(amount);
-    }/*
-
-    public boolean withdraw(double amount, int accountNo) {
-        double balance = Double.parseDouble(readAccount(accountNo));
-        if (balance < amount) {
-            System.out.println("You don't have enough money in your account.");
-            return false;
+    public Double getBalance(int accountNo) {
+        Account account = getAccountByNo(accountNo);
+        if (account != null) {
+            return getAccountByNo(accountNo).getBalance();
         } else {
-            System.out.println("Withdrew" + amount);
-            getAccountByNo(accountNo).withdraw(amount);
-            return true;
+            return null;
         }
     }
+
+    public void printBalance(int accountNo) {
+       System.out.println(accountNo + ": " + getBalance(accountNo));
+    }
+
+    public void deposit(double amount, int accountNo) {
+        getAccountByNo(accountNo).deposit(amount);
+    }
+
+    public void withdraw(double amount, int accountNo) {
+       getAccountByNo(accountNo).withdraw(amount);
+    }/*
 
     public boolean transfer(double amount, Customer customer, int transfereeNum, int accountNo) {
         
