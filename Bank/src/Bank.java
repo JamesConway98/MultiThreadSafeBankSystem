@@ -81,6 +81,9 @@ public class Bank {
         } else if (cust1.getBalance(accountNum1) < amount) {
             System.out.println("Insufficient funds");
             return;
+        } else if (cust1.getAccountByNo(accountNum1).getType() == 'k') {
+            System.out.println("You cannot transfer from a kids' account");
+            return;
         }
 
         Customer cust2 = getCustomerByName(customer2);

@@ -4,9 +4,13 @@ public class KidsAccount extends  Account {
     No withdrawals
      */
 
+    char type = 'k';
+
     public KidsAccount(int an) {
         super(an);
     }
+
+
 
     @Override
     public void withdraw(double amount) {

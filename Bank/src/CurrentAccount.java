@@ -1,8 +1,11 @@
 public class CurrentAccount extends Account {
 
+    private char type = 'c';
+
     public CurrentAccount(int an) {
         super(an);
     }
+
 
     @Override
     public void withdraw(double amount) {

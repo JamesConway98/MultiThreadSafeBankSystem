@@ -4,6 +4,8 @@ public class SavingsAccount extends Account {
     NO withdrawals
      */
 
+    char type = 's';
+
     public SavingsAccount(int an) {
         super(an);
     }

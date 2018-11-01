@@ -2,9 +2,14 @@ public abstract class Account {
 
     int accountNum;
     double balance;
+    char type = 'a';
 
     public Account(int an) {
         accountNum = an;
+    }
+
+    public char getType() {
+        return type;
     }
 
     public double getBalance() {
