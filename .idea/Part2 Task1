@@ -1,0 +1,24 @@
+public class Main {
+    public static void main(String[] args) {
+
+        ThreadGroup currentGroup = Thread.currentThread().getThreadGroup();
+        int numberOfThreads = currentGroup.activeCount();
+        Thread[] listOfThreads = new Thread[numberOfThreads];
+        currentGroup.enumerate(listOfThreads);
+
+        for (Thread s : listOfThreads) {
+            System.out.println("the name of this thread is " + s.getName());
+            System.out.println("the id of this thread is " + s.getId());
+            System.out.println("the state of this thread is " + s.getState());
+            System.out.println("the priority of this thread is " + s.getPriority());
+            if (s.isDaemon()){
+                System.out.println("This thread is a Daemon");
+            } else {
+                System.out.println("This thread is not a Daemon");
+            }
+
+
+        }
+
+    }
+}
