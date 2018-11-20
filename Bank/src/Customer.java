@@ -20,9 +20,6 @@ public class Customer implements Comparable<Customer> {
         return username;
     }
 
-    private String getPassword() {
-        return password;
-    }
 
     public int getID() {
         return id;
@@ -34,25 +31,6 @@ public class Customer implements Comparable<Customer> {
 
     public void setUsername(String username) {
         this.username = username;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-
-    }
-
-    private boolean checkUsername(String username) {
-        if (this.username == username) {
-            return true;
-        }
-        return false;
-    }
-
-    private boolean checkPassword(String password) {
-        if (this.password == password) {
-            return true;
-        }
-        return false;
     }
 
     public Account getAccountByNo(int accountNo) {

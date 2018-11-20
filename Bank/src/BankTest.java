@@ -1,11 +1,10 @@
 
-import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class BankTest {
 
-    Bank bank = new Bank();
+ /*   Bank bank = new Bank();
+
 
     @Test
     public void testDeposit() {
@@ -95,5 +94,5 @@ public class BankTest {
 
         assertEquals(bank.getCustomerByName("james").getAccountByNo(1234).getBalance(), 50, 0.0);
         assertEquals(bank.getCustomerByName("jams").getAccountByNo(5678).getBalance(), 50, 0.0);
-    }
+    }*/
 }

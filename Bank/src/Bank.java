@@ -5,6 +5,11 @@ import java.util.Scanner;
 public class Bank {
 
     List<Customer> customerList = new ArrayList<>();
+    Employee employee;
+
+    public Bank(){
+        employee = new Employee();
+    }
 
     public void bankWait(int duration) {
         try {
@@ -12,11 +17,6 @@ public class Bank {
         } catch (InterruptedException ie) {
             ie.printStackTrace();
         }
-    }
-
-    public void addCustomer(String username, String password) {
-        Customer customer = new Customer(username, password);
-        customerList.add(customer);
     }
 
     public Customer getCustomerByName(String username) {
@@ -32,6 +32,12 @@ public class Bank {
     public void addAccount(String username, char accountType, int accountNum) {
         Customer customer = getCustomerByName(username);
         customer.addAccount(accountType, accountNum);
+    }
+
+    public void addCustomer(String username, String password) {
+        Customer customer = new Customer(username, password);
+        customerList.add(customer);
+        employee.addCustomer(customer);
     }
 
 
@@ -57,22 +63,22 @@ public class Bank {
         DepositRunnable dr = new DepositRunnable(cust, amount, accountNumber);
         Thread deposit = new Thread(dr);
         deposit.start();
-        bankWait(200);
+       // bankWait(200);
     }
 
     public void withdraw(String customer, double amount, int accountNumber) {
         Customer cust = this.getCustomerByName(customer);
-        if (cust.getBalance(accountNumber) < amount) {
-            System.out.println("Insufficient funds");
-        } else {
+        //if (cust.getBalance(accountNumber) < amount) {
+            //System.out.println("Insufficient funds");
+        //} else {
             WithdrawRunnable wr = new WithdrawRunnable(cust, amount, accountNumber);
             Thread withdraw = new Thread(wr);
             withdraw.start();
-            bankWait(200);
-        }
+         //   bankWait(200);
+        //}
     }
 
-    public void transfer(String customer1, String customer2, double amount, int accountNum1, int accountNum2) {
+    public void customerTransfer(String customer1, String customer2, double amount, int accountNum1, int accountNum2) {
         Customer cust1 = getCustomerByName(customer1);
 
         if (cust1.getBalance(accountNum1) == null) {
@@ -91,6 +97,28 @@ public class Bank {
         TransferRunnable tr = new TransferRunnable(cust1, cust2, amount, accountNum1, accountNum2);
         Thread transfer = new Thread(tr);
         transfer.start();
-        bankWait(200);
+       // bankWait(200);
+    }
+
+    public void employeeTransfer(String customer1, String customer2, double amount, int accountNum1, int accountNum2) {
+        Customer cust1 = getCustomerByName(customer1);
+
+        if (cust1.getBalance(accountNum1) == null) {
+            System.out.println("You have no such account");
+            return;
+        } else if (cust1.getBalance(accountNum1) < amount) {
+            System.out.println("Insufficient funds");
+            return;
+        } else if (cust1.getAccountByNo(accountNum1).getType() == 'k') {
+            System.out.println("You cannot transfer from a kids' account");
+            return;
+        }
+
+        Customer cust2 = getCustomerByName(customer2);
+
+        TransferRunnable tr = new TransferRunnable(cust1, cust2, amount, accountNum1, accountNum2);
+        Thread transfer = new Thread(tr);
+        transfer.start();
+        // bankWait(200);
     }
 }
