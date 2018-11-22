@@ -1,98 +1,120 @@
+import org.junit.Before;
+import org.junit.Test;
 
+import java.util.Arrays;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 
 public class BankTest {
 
- /*   Bank bank = new Bank();
+    Bank bank;
 
+    @Before
+    public void initialize() {
+
+        bank = new Bank();
+
+        bank.addCustomer("Robbie Dings", "password");
+        bank.addAccount("Robbie Dings", 'c', 1110);
+
+        bank.addCustomer("Billy Stopman", "password");
+        bank.addAccount("Billy Stopman", 's', 1111);
+        bank.addAccount("Billy Stopman", 'k', 1112);
+
+        bank.deposit("Robbie Dings", 100, 1110);
+        bank.deposit("Billy Stopman", 100, 1111);
+        bank.deposit("Billy Stopman", 100, 1112);
+
+    }
 
     @Test
     public void testDeposit() {
-        bank.addCustomer("james", "password");
-        bank.addAccount("james", 'c', 1234);
 
-        bank.addCustomer("jams", "password");
-        bank.addAccount("jams", 'c', 5678);
+        bank.deposit("Robbie Dings", 100, 1110);
+        bank.deposit("Billy Stopman", 50, 1111);
+        bank.deposit("Billy Stopman", 150, 1112);
 
-        bank.deposit("james", 100, 1234);
-        bank.deposit("jams", 50, 5678);
-
-        assertEquals(bank.getCustomerByName("james").getAccountByNo(1234).getBalance(), 100, 0.0);
-        assertEquals(bank.getCustomerByName("jams").getAccountByNo(5678).getBalance(), 50, 0.0);
+        assertEquals(bank.getCustomerByName("Robbie Dings").getAccountByNo(1110).getBalance(), 200, 0.0);
+        assertEquals(bank.getCustomerByName("Billy Stopman").getAccountByNo(1111).getBalance(), 150, 0.0);
+        assertEquals(bank.getCustomerByName("Billy Stopman").getAccountByNo(1112).getBalance(), 250, 0.0);
     }
 
     @Test
     public void testWithdraw() {
-        bank.addCustomer("james", "password");
-        bank.addAccount("james", 'c', 1234);
 
-        bank.addCustomer("jams", "password");
-        bank.addAccount("jams", 'c', 5678);
+        bank.withdraw("Robbie Dings", 50, 1110);
+        bank.withdraw("Billy Stopman", 50, 1111);
+        bank.withdraw("Billy Stopman", 150, 1112);
 
-        bank.deposit("james", 100, 1234);
-        bank.deposit("jams", 50, 5678);
+        assertEquals(bank.getCustomerByName("Robbie Dings").getAccountByNo(1110).getBalance(), 50, 0.0);
+        assertEquals(bank.getCustomerByName("Billy Stopman").getAccountByNo(1111).getBalance(), 100, 0.0);
+        assertEquals(bank.getCustomerByName("Billy Stopman").getAccountByNo(1112).getBalance(), 100, 0.0);
 
-        bank.withdraw("james", 50, 1234);
-        bank.withdraw("jams", 50, 5678);
+        bank.withdraw("Robbie Dings", 100, 1110);
 
-        assertEquals(bank.getCustomerByName("james").getAccountByNo(1234).getBalance(), 50, 0.0);
-        assertEquals(bank.getCustomerByName("jams").getAccountByNo(5678).getBalance(), 0, 0.0);
+        assertEquals(bank.getCustomerByName("Robbie Dings").getAccountByNo(1110).getBalance(), 50, 0.0);
     }
 
     @Test
     public void testTransfer() {
-        bank.addCustomer("james", "password");
-        bank.addAccount("james", 'c', 1234);
+        bank.employeeTransfer("Robbie Dings", "Billy Stopman", 25, 1110, 1111);
+        bank.customerTransfer("Robbie Dings", "Billy Stopman", 50, 1110, 1111);
 
-        bank.addCustomer("jams", "password");
-        bank.addAccount("jams", 'c', 5678);
+        assertEquals(bank.getCustomerByName("Robbie Dings").getAccountByNo(1110).getBalance(), 25, 0.0);
+        assertEquals(bank.getCustomerByName("Billy Stopman").getAccountByNo(1111).getBalance(), 175, 0.0);
 
-        bank.deposit("james", 100, 1234);
-        bank.deposit("jams", 50, 5678);
+        bank.customerTransfer("Robbie Dings", "Billy Stopman", 50, 1110, 1111);
 
-        bank.transfer("james", "jams", 50, 1234, 5678);
-
-        assertEquals(bank.getCustomerByName("james").getAccountByNo(1234).getBalance(), 50, 0.0);
-        assertEquals(bank.getCustomerByName("jams").getAccountByNo(5678).getBalance(), 100, 0.0);
+        assertEquals(bank.getCustomerByName("Robbie Dings").getAccountByNo(1110).getBalance(), 25, 0.0);
+        assertEquals(bank.getCustomerByName("Billy Stopman").getAccountByNo(1111).getBalance(), 175, 0.0);
     }
 
     @Test
     public void testKids() {
-        bank.addCustomer("james", "password");
-        bank.addAccount("james", 'k', 1234);
+        bank.employeeTransfer("Billy Stopman", "Robbie Dings", 25, 1112, 1110);
+        bank.customerTransfer("Robbie Dings", "Billy Stopman", 50, 1110, 1112);
 
-        bank.addCustomer("jams", "password");
-        bank.addAccount("jams", 'c', 5678);
+        assertEquals(bank.getCustomerByName("Robbie Dings").getAccountByNo(1110).getBalance(), 50, 0.0);
+        assertEquals(bank.getCustomerByName("Billy Stopman").getAccountByNo(1112).getBalance(), 150, 0.0);
 
-        bank.deposit("james", 100, 1234);
+        bank.withdraw("Billy Stopman", 100, 1112);
+        bank.deposit("Billy Stopman", 100, 1112);
 
-        bank.withdraw("james", 50, 1234);
-
-        assertEquals(bank.getCustomerByName("james").getAccountByNo(1234).getBalance(), 100, 0.0);
-
-        bank.transfer("james", "jams", 50, 1234, 5678);
-
-        assertEquals(bank.getCustomerByName("james").getAccountByNo(1234).getBalance(), 100, 0.0);
-        assertEquals(bank.getCustomerByName("jams").getAccountByNo(5678).getBalance(), 0, 0.0);
+        assertEquals(bank.getCustomerByName("Billy Stopman").getAccountByNo(1112).getBalance(), 250, 0.0);
     }
 
     @Test
     public void testSavings() {
-        bank.addCustomer("james", "password");
-        bank.addAccount("james", 's', 1234);
+        bank.employeeTransfer("Billy Stopman", "Robbie Dings", 25, 1111, 1110);
 
-        bank.addCustomer("jams", "password");
-        bank.addAccount("jams", 'c', 5678);
+        assertEquals(bank.getCustomerByName("Billy Stopman").getAccountByNo(1111).getBalance(), 75, 0.0);
 
-        bank.deposit("james", 100, 1234);
+    }
 
-        bank.withdraw("james", 50, 1234);
+    @Test
+    public void testInvalidAccountType() {
 
-        assertEquals(bank.getCustomerByName("james").getAccountByNo(1234).getBalance(), 100, 0.0);
+        assertFalse(bank.addAccount("Billy Stopman", 't', 1112));
+    }
 
-        bank.transfer("james", "jams", 50, 1234, 5678);
+    @Test
+    public void testwithdrawandDeposit() {
 
-        assertEquals(bank.getCustomerByName("james").getAccountByNo(1234).getBalance(), 50, 0.0);
-        assertEquals(bank.getCustomerByName("jams").getAccountByNo(5678).getBalance(), 50, 0.0);
-    }*/
+        bank.withdraw("Robbie Dings", 100, 1110);
+        bank.deposit("Robbie Dings", 100, 1110);
+        bank.withdraw("Robbie Dings", 100, 1110);
+        bank.withdraw("Robbie Dings", 100, 1110);
+        bank.withdraw("Robbie Dings", 100, 1110);
+        bank.deposit("Robbie Dings", 100, 1110);
+        bank.deposit("Robbie Dings", 100, 1110);
+        bank.deposit("Robbie Dings", 100, 1110);
+        bank.deposit("Robbie Dings", 100, 1110);
+        bank.deposit("Robbie Dings", 100, 1110);
+
+        assertEquals(bank.getCustomerByName("Robbie Dings").getAccountByNo(1110).getBalance(), 500, 0.0);
+
+    }
+
+
 }

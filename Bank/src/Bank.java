@@ -29,9 +29,9 @@ public class Bank {
         return null;
     }
 
-    public void addAccount(String username, char accountType, int accountNum) {
+    public boolean addAccount(String username, char accountType, int accountNum) {
         Customer customer = getCustomerByName(username);
-        customer.addAccount(accountType, accountNum);
+        return customer.addAccount(accountType, accountNum);
     }
 
     public void addCustomer(String username, String password) {
@@ -63,23 +63,25 @@ public class Bank {
         DepositRunnable dr = new DepositRunnable(cust, amount, accountNumber);
         Thread deposit = new Thread(dr);
         deposit.start();
-       // bankWait(200);
+        bankWait(50);
     }
 
     public void withdraw(String customer, double amount, int accountNumber) {
         Customer cust = this.getCustomerByName(customer);
-        //if (cust.getBalance(accountNumber) < amount) {
-            //System.out.println("Insufficient funds");
-        //} else {
+        bankWait(50);
+        if (cust.getBalance(accountNumber) < amount) {
+            System.out.println("Insufficient funds");
+        } else {
             WithdrawRunnable wr = new WithdrawRunnable(cust, amount, accountNumber);
             Thread withdraw = new Thread(wr);
             withdraw.start();
-         //   bankWait(200);
-        //}
+            bankWait(50);
+        }
     }
 
     public void customerTransfer(String customer1, String customer2, double amount, int accountNum1, int accountNum2) {
         Customer cust1 = getCustomerByName(customer1);
+        bankWait(50);
 
         if (cust1.getBalance(accountNum1) == null) {
             System.out.println("You have no such account");
@@ -97,11 +99,12 @@ public class Bank {
         TransferRunnable tr = new TransferRunnable(cust1, cust2, amount, accountNum1, accountNum2);
         Thread transfer = new Thread(tr);
         transfer.start();
-       // bankWait(200);
+       bankWait(50);
     }
 
     public void employeeTransfer(String customer1, String customer2, double amount, int accountNum1, int accountNum2) {
         Customer cust1 = getCustomerByName(customer1);
+        bankWait(50);
 
         if (cust1.getBalance(accountNum1) == null) {
             System.out.println("You have no such account");
@@ -116,9 +119,9 @@ public class Bank {
 
         Customer cust2 = getCustomerByName(customer2);
 
-        TransferRunnable tr = new TransferRunnable(cust1, cust2, amount, accountNum1, accountNum2);
+        TransferRunnable tr = new TransferRunnable(employee, cust1, cust2, amount, accountNum1, accountNum2);
         Thread transfer = new Thread(tr);
         transfer.start();
-        // bankWait(200);
+        bankWait(50);
     }
 }

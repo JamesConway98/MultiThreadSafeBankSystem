@@ -1,7 +1,6 @@
 public class KidsAccount extends  Account {
     /*
-    Can't transfer out of kids accounts, can transfer in
-    No withdrawals
+    No withdrawals or transfering out
      */
 
     char type = 'k';
@@ -19,4 +18,5 @@ public class KidsAccount extends  Account {
     public void withdraw(double amount) {
         System.out.println("Cannot withdraw from kids' accounts.");
     }
+
 }

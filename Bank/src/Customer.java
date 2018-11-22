@@ -3,7 +3,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class Customer implements Comparable<Customer> {
+public class Customer {
 
     String username;
     String password;
@@ -18,19 +18,6 @@ public class Customer implements Comparable<Customer> {
 
     public String getUsername() {
         return username;
-    }
-
-
-    public int getID() {
-        return id;
-    }
-
-    public void editName(String newName) {
-        username = newName;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
     }
 
     public Account getAccountByNo(int accountNo) {
@@ -62,29 +49,6 @@ public class Customer implements Comparable<Customer> {
         return true;
     }
 
-
-    public List<Account> getAccountList() {
-        return myAccountList;
-    }
-
-
-    /*public void logIn(String username, String password) {
-        System.out.println("Enter your Username");
-        username = sc.nextLine();
-
-        System.out.println("Enter your Password");
-        password = sc.nextLine();
-
-
-        if (username == null || password == null) {
-            System.out.println("Please make sure to enter both fields ");
-        }
-        else {
-            System.out.println("Welcome " + username);
-        }
-
-    }*/
-
     public Double getBalance(int accountNo) {
         Account account = getAccountByNo(accountNo);
         if (account != null) {
@@ -92,10 +56,6 @@ public class Customer implements Comparable<Customer> {
         } else {
             return null;
         }
-    }
-
-    public void printBalance(int accountNo) {
-       System.out.println(accountNo + ": " + getBalance(accountNo));
     }
 
     public void deposit(double amount, int accountNo) {
@@ -108,40 +68,6 @@ public class Customer implements Comparable<Customer> {
 
     public void transfer(double amount, Customer customer, int transfereeNum, int accountNo) {
         this.getAccountByNo(accountNo).transfer(amount, customer, transfereeNum);
-    }
-/*
-    public String readAccount(int accountNo) {
-        for (Account account : myAccountList) {
-            if (accountNo == account.getAccountNum()) {
-                try {
-                    File file = new File("/home/ckb16190/Bank/accounts");
-
-                    String st;
-
-                    BufferedReader br = new BufferedReader(new FileReader(file));
-
-                    while ((st = br.readLine()) != null) {
-                        StringTokenizer strtok = new StringTokenizer(st, ",");
-                        if (Integer.parseInt(strtok.nextToken()) == accountNo)
-                            return strtok.nextToken();
-                    }
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-        System.out.println("STOP, THIEF!");
-        return "";
-    }*/
-
-    @Override
-    public int compareTo(Customer customer) {
-        if (this.id == customer.getID()) {
-            return 0;
-        } else {
-            return -1;
-        }
     }
 
 
