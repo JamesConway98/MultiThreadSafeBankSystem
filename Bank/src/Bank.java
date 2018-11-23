@@ -5,10 +5,11 @@ import java.util.Scanner;
 public class Bank {
 
     List<Customer> customerList = new ArrayList<>();
-    Employee employee;
+    List<Employee> employeeList = new ArrayList<>();
+    Manager manager;
 
     public Bank(){
-        employee = new Employee();
+        manager = new Manager();
     }
 
     public void bankWait(int duration) {
@@ -25,103 +26,116 @@ public class Bank {
                 return customer;
             }
         }
-        System.out.println("No such login available");
+        System.out.println("No such customer available");
         return null;
     }
 
+    public Employee getEmployeeById(int id) {
+        for (Employee employee: employeeList) {
+            if (employee.getId() == id) {
+                return employee;
+            }
+        }
+        System.out.println("No such employee available");
+        return null;
+    }
+
+
     public boolean addAccount(String username, char accountType, int accountNum) {
         Customer customer = getCustomerByName(username);
-        return customer.addAccount(accountType, accountNum);
+        for (Customer cust: customerList) {
+             if (cust.getUsername().equals(customer.getUsername())) {
+                 customer.addAccount(accountNum);
+                 return manager.addAccount(accountType, accountNum);
+             }
+        }
+        return false;
     }
 
-    public void addCustomer(String username, String password) {
-        Customer customer = new Customer(username, password);
+    public void addEmployee(int id) {
+        Employee employee = new Employee(id, customerList);
+        employeeList.add(employee);
+    }
+
+    public void addCustomer(String username) {
+        Customer customer = new Customer(username);
         customerList.add(customer);
-        employee.addCustomer(customer);
+        for (Employee employee : employeeList) {
+             employee.addCustomer(customer);
+        }
     }
 
+    public void deposit(User user, double amount, int accountNumber) {
+        bankWait(50);
+        if(user instanceof Customer) {
+            if (!((Customer) user).checkMyAccounts(accountNumber))
+                return;
+        }
 
-    /* public void logIn() {
-         Scanner sc = new Scanner();
-
-         System.out.println("Enter your Username");
-         String username = sc.nextLine();
-
-         System.out.println("Enter your Password");
-         String password = sc.nextLine();
-
-
-         if (username == null || password == null) {
-             System.out.println("Please make sure to enter both fields ");
-         } else {
-             System.out.println("Welcome " + username);
-         }
-     }*/
-
-    public void deposit(String customer, double amount, int accountNumber) {
-        Customer cust = this.getCustomerByName(customer);
-        DepositRunnable dr = new DepositRunnable(cust, amount, accountNumber);
+        DepositRunnable dr = new DepositRunnable(amount, accountNumber, manager);
         Thread deposit = new Thread(dr);
         deposit.start();
         bankWait(50);
     }
 
-    public void withdraw(String customer, double amount, int accountNumber) {
-        Customer cust = this.getCustomerByName(customer);
-        bankWait(50);
-        if (cust.getBalance(accountNumber) < amount) {
+    public void withdraw(User user, double amount, int accountNumber) {
+
+        if (user instanceof Customer) {
+            if (!((Customer) user).checkMyAccounts(accountNumber))
+                return;
+        }
+
+        if (manager.getBalance(accountNumber) < amount) {
             System.out.println("Insufficient funds");
-        } else {
-            WithdrawRunnable wr = new WithdrawRunnable(cust, amount, accountNumber);
+
+        } else if (manager.getType(accountNumber) == 's'){
+            System.out.println("You cannot withdraw from a savings' account");
+            return;
+        }else if (manager.getType(accountNumber) == 'k') {
+            System.out.println("You cannot withdraw from a kids' account");
+            return;
+        }else{
+            WithdrawRunnable wr = new WithdrawRunnable(amount, accountNumber, manager);
             Thread withdraw = new Thread(wr);
             withdraw.start();
             bankWait(50);
+
         }
     }
 
-    public void customerTransfer(String customer1, String customer2, double amount, int accountNum1, int accountNum2) {
-        Customer cust1 = getCustomerByName(customer1);
-        bankWait(50);
+    public void transfer(User user, double amount, int accountFrom, int accountTo) {
 
-        if (cust1.getBalance(accountNum1) == null) {
-            System.out.println("You have no such account");
-            return;
-        } else if (cust1.getBalance(accountNum1) < amount) {
+        if(user instanceof Customer) {
+            if (!((Customer) user).checkMyAccounts(accountFrom))
+                return;
+        }
+
+        if (manager.getBalance(accountFrom) < amount) {
             System.out.println("Insufficient funds");
             return;
-        } else if (cust1.getAccountByNo(accountNum1).getType() == 'k') {
+        } else if (manager.getType(accountFrom) == 'k') {
             System.out.println("You cannot transfer from a kids' account");
             return;
         }
 
-        Customer cust2 = getCustomerByName(customer2);
-
-        TransferRunnable tr = new TransferRunnable(cust1, cust2, amount, accountNum1, accountNum2);
+        TransferRunnable tr = new TransferRunnable(amount, accountFrom, accountTo, manager);
         Thread transfer = new Thread(tr);
         transfer.start();
-       bankWait(50);
-    }
-
-    public void employeeTransfer(String customer1, String customer2, double amount, int accountNum1, int accountNum2) {
-        Customer cust1 = getCustomerByName(customer1);
         bankWait(50);
 
-        if (cust1.getBalance(accountNum1) == null) {
-            System.out.println("You have no such account");
-            return;
-        } else if (cust1.getBalance(accountNum1) < amount) {
-            System.out.println("Insufficient funds");
-            return;
-        } else if (cust1.getAccountByNo(accountNum1).getType() == 'k') {
-            System.out.println("You cannot transfer from a kids' account");
-            return;
+
+    }
+
+    public double getBalance(User user, int accountNumber) {
+
+        if(user instanceof Customer) {
+            if (!((Customer) user).checkMyAccounts(accountNumber))
+                return 0.0;
         }
 
-        Customer cust2 = getCustomerByName(customer2);
-
-        TransferRunnable tr = new TransferRunnable(employee, cust1, cust2, amount, accountNum1, accountNum2);
-        Thread transfer = new Thread(tr);
-        transfer.start();
         bankWait(50);
+        return user.getBalance(accountNumber, manager);
     }
+
+
 }
