@@ -1,10 +1,7 @@
-import java.util.ArrayList;
-
 public class ThreadMonitor {
 
-    ThreadGroup rootThreadGroup;
-    Thread[] threads;
-    ThreadGroup[] threadGroups;
+    private Thread[] threads;
+    private ThreadGroup[] threadGroups;
 
     public ThreadMonitor() {
         monitorThreads();
@@ -12,7 +9,7 @@ public class ThreadMonitor {
 
     public void monitorThreads() {
 
-        rootThreadGroup = Thread.currentThread().getThreadGroup();
+        ThreadGroup rootThreadGroup = Thread.currentThread().getThreadGroup();
         ThreadGroup parentThreadGroup;
         while ((parentThreadGroup = rootThreadGroup.getParent()) != null) {
             rootThreadGroup = parentThreadGroup;
@@ -27,36 +24,22 @@ public class ThreadMonitor {
         while (rootThreadGroup.enumerate(threadGroups, true) == threadGroups.length) {
             threadGroups = new ThreadGroup[threadGroups.length * 2];
         }
-
-        for (Thread thread : threads) {
-            printThread(thread);
-        }
     }
 
     public Thread[] getThreads() {
         return threads;
     }
 
-    public void printThread(Thread thread) {
-        if (thread != null) {
-            System.out.println("\n");
-            System.out.println("the name of this thread is " + thread.getName());
-            System.out.println("the id of this thread is " + thread.getId());
-            System.out.println("the state of this thread is " + thread.getState());
-            System.out.println("the priority of this thread is " + thread.getPriority());
-            if (thread.isDaemon()) {
-                System.out.println("This thread is a Daemon");
-            } else {
-                System.out.println("This thread is not a Daemon");
-            }
-        }
-    }
 
     public Thread searchThreads(String name) {
-        for (Thread thread : threads) {
-            if (thread.getName().equals(name)) {
-                return thread;
+        try {
+            for (Thread thread : threads) {
+                if (thread.getName().equals(name)) {
+                    return thread;
+                }
             }
+        } catch (NullPointerException npe) {
+            return null;
         }
         return null;
     }
@@ -68,13 +51,5 @@ public class ThreadMonitor {
             }
         }
         return null;
-    }
-
-    public boolean addThread() {
-        return true;
-    }
-
-    public boolean deleteThread() {
-        return true;
     }
 }
