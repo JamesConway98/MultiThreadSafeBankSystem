@@ -14,9 +14,9 @@ public class KidsAccount extends  Account {
         return type;
     }
 
-    @Override
+
     public void withdraw(double amount) {
-        System.out.println("Cannot withdraw from kids' accounts.");
+        System.out.println("Can't withdraw from a kids' account");
     }
 
 }
