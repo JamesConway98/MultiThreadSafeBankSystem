@@ -1,20 +1,20 @@
 public class DepositRunnable implements Runnable {
 
     private static final int DELAY = 1;
-    private Customer customer;
     private double amount;
     private int accountNumber;
+    private Manager manager;
 
 
-    public DepositRunnable(Customer c, double a, int ac) {
-        customer = c;
+    public DepositRunnable(double a, int ac, Manager manager) {
         amount = a;
         accountNumber = ac;
+        this.manager = manager;
     }
 
     public void run() {
         try {
-            customer.deposit(amount, accountNumber);
+            manager.getAccountByNumber(accountNumber).deposit(amount);
             Thread.sleep(DELAY);
         } catch (InterruptedException ie) {
             ie.printStackTrace();
