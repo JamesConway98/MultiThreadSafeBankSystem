@@ -1,43 +1,87 @@
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.util.ArrayList;
+import java.util.Vector;
 
-public class ThreadTable extends JPanel {
+public class ThreadTable extends JTable {
 
-    JScrollPane scrollPane;
+    private JScrollPane scrollPane;
+    private DefaultTableModel dm;
+
 
     ThreadTable(Thread[] threads) {
-        buildTable(threads);
-    }
+            buildTable(threads);
+        }
 
-    public JScrollPane getScrollPane() {
-        return scrollPane;
-    }
+        public JScrollPane getScrollPane() {
+            return scrollPane;
+        }
 
-    public JScrollPane buildTable(Thread[] threads) {
-        ArrayList<Thread> threadNoNulls = new ArrayList<>();
-        
-        for (Thread thread : threads) {
-            if (thread != null) {
-                threadNoNulls.add(thread);
+        public void buildTable(Thread[] threads) {
+
+
+            ArrayList<Thread> threadNoNulls = clearNulls(threads);
+
+
+            dm = new DefaultTableModel(0,0);
+            String header[] = new String[] { "Thread Name", "ID", "State",
+                    "Priority", "Daemon" };
+            dm.setColumnIdentifiers(header);
+            this.setModel(dm);
+
+            for (int i = 0; i < threadNoNulls.size(); i++) {
+                Vector<Object> data = new Vector<>();
+                data.add(threadNoNulls.get(i).getName());
+                data.add(Long.toString(threadNoNulls.get(i).getId()));
+                data.add(threadNoNulls.get(i).getState().toString());
+                data.add(Integer.toString(threadNoNulls.get(i).getPriority()));
+                data.add(Boolean.toString(threadNoNulls.get(i).isDaemon()));
+                dm.addRow(data);
             }
-        }
-        
-        String data[][] = new String[threadNoNulls.size()][5];
-        String column[] = {"Thread Name", "ID", "State", "Priority", "Daemon"};
-        for (int i = 0; i < threadNoNulls.size(); i++) {
-                data[i][0] = threadNoNulls.get(i).getName();
-                data[i][1] = Long.toString(threadNoNulls.get(i).getId());
-                data[i][2] = threadNoNulls.get(i).getState().toString();
-                data[i][3] = Integer.toString(threadNoNulls.get(i).getPriority());
-                data[i][4] = Boolean.toString(threadNoNulls.get(i).isDaemon());
+
+            scrollPane = new JScrollPane(this);
         }
 
-        JTable threadDisplay = new JTable(data, column);
-        threadDisplay.setBounds(30, 40, 200, 300);
+        public void updateTable(Thread thread) {
 
-        scrollPane = new JScrollPane(threadDisplay);
 
-        return scrollPane;
-    }
+            Vector<Object> row = new Vector<>();
+            row.add(thread.getName());
+            row.add(Long.toString(thread.getId()));
+            row.add(thread.getState().toString());
+            row.add(thread.getPriority());
+            row.add(Boolean.toString(thread.isDaemon()));
+            dm.addRow(row);
+        }
+
+        public void clearTable() {
+            dm.setRowCount(0);
+        }
+
+        public ArrayList<Thread> clearNulls(Thread[] threads) {
+            ArrayList<Thread> threadNoNulls = new ArrayList<>();
+                for (Thread thread : threads) {
+                    if (thread != null) {
+                        threadNoNulls.add(thread);
+                    }
+                }
+                return threadNoNulls;
+        }
+
+        public void deleteRowAtThread(Thread thread) {
+            int rowNum = 0;
+            for (int i = dm.getRowCount() - 1; i >= 0; --i) {
+                    if (dm.getValueAt(i, 1).equals(thread.getName())) {
+                        // what if value is not unique?
+                        rowNum = i;
+                        break;
+                    }
+            }
+
+            if (rowNum != 0) {
+                dm.fireTableRowsDeleted(rowNum, rowNum);
+            }
+
+        }
+
 }
