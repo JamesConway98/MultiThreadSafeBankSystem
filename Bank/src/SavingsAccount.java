@@ -1,3 +1,4 @@
+import java.util.concurrent.TimeUnit;
 
 public class SavingsAccount extends Account {
 
@@ -18,7 +19,31 @@ public class SavingsAccount extends Account {
 
     @Override
     public void withdraw(double amount) {
-        System.out.println("Cannot withdraw from savings' accounts.");
+
+        boolean stillWaiting = true;
+        fundsLock.lock();
+
+        try{
+            while(balance < amount){
+                if(!stillWaiting)
+                    Thread.currentThread().interrupt();
+
+                try {
+                    stillWaiting = enoughFundsCondition.await(10, TimeUnit.SECONDS);
+                } catch (InterruptedException ie) {
+                    ie.printStackTrace();
+                }
+            }
+
+            System.out.println("Thread with id " + Thread.currentThread().getId() + ", withdrawing " + amount);
+            balance = balance - amount;
+            System.out.println("Thread with id " + Thread.currentThread().getId() + ", current balance: " + balance);
+
+        }
+        finally{
+            fundsLock.unlock();
+        }
+
     }
 
 
