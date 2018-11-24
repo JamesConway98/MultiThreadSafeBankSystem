@@ -86,19 +86,20 @@ public class ThreadGUI implements ActionListener {
             case "Filter by Thread Group": {
                 String name = JOptionPane.showInputDialog(threadPanel, "Please enter the name of the thread group you want.", null);
                 if (name == null) {
+                    JOptionPane.showMessageDialog(null, "Please enter a name");
+                } else {
+                    ThreadGroup threadGroup = threadMonitor.filterByThreadGroup(name);
+                    if (threadGroup != null) {
+                        Thread[] threads = new Thread[threadGroup.activeCount()];
+                        while (threadGroup.enumerate(threads, true) == threads.length) {
+                            threads = new Thread[threads.length * 2];
+                        }
+                        refreshFrame(threads);
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Please enter a valid name");
+                    }
                     break;
                 }
-                ThreadGroup threadGroup = threadMonitor.filterByThreadGroup(name);
-                if (threadGroup != null) {
-                    Thread[] threads = new Thread[threadGroup.activeCount()];
-                    while (threadGroup.enumerate(threads, true) == threads.length) {
-                        threads = new Thread[threads.length * 2];
-                    }
-                 refreshFrame(threads);
-                } else {
-                    JOptionPane.showMessageDialog(null, "Please enter a valid name");
-                }
-                break;
             }
             case "Start Thread": {
                 String name = JOptionPane.showInputDialog(threadPanel, "Please enter the name of the thread you want to add.", null);

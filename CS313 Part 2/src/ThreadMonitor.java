@@ -45,11 +45,15 @@ public class ThreadMonitor {
     }
 
     public ThreadGroup filterByThreadGroup(String name) {
-        for (ThreadGroup threadGroup : threadGroups) {
-            if (threadGroup.getName().equals(name)) {
-                return threadGroup;
+        try {
+            for (ThreadGroup threadGroup : threadGroups) {
+                if (threadGroup.getName().equals(name)) {
+                    return threadGroup;
+                }
             }
+        } catch (NullPointerException npe) {
+            return null;
         }
-        return null;
-    }
+            return null;
+        }
 }
