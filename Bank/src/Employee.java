@@ -15,13 +15,11 @@ public class Employee extends User{
         customerList.add(customer);
     }
 
+    public void updateCustomers(List<Customer> customers) {
+        this.customerList = customers;
+    }
+
     public int getId(){
         return id;
     }
-
-//    public void transfer(double amount, Customer customer1, Customer customer2, int transfereeNum, int accountNo) {
-//        Account transfererAccount = customer1.getAccountByNo(accountNo);
-//        transfererAccount.transfer(amount, customer2, transfereeNum);
-//    }
-
 }

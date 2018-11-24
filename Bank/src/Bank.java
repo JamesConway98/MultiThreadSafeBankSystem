@@ -26,7 +26,7 @@ public class Bank {
                 return customer;
             }
         }
-        System.out.println("No such customer available");
+        System.out.println("There are no customers called " + username);
         return null;
     }
 
@@ -137,5 +137,15 @@ public class Bank {
         return user.getBalance(accountNumber, manager);
     }
 
-
+    public void alterCustomer(Employee employee, Customer customer, String newUsername) {
+        try {
+            String oldName = customer.getUsername();
+            customer.setUsername(newUsername);
+            for (Employee empl : employeeList) {
+                empl.updateCustomers(customerList);
+            }
+            System.out.println("Employee " + employee.getId() + " has updated customer " + oldName + " to " + newUsername + ".");
+        } catch (NullPointerException npe) {
+        }
+    }
 }

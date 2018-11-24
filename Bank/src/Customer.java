@@ -20,10 +20,10 @@ public class Customer extends User{
         return username;
     }
 
+    public void setUsername(String username) {
+        this.username = username;
+    }
 
-    /*public void transfer(double amount, Customer customer, int transfereeNum, int accountNo) {
-        this.getAccountByNo(accountNo).transfer(amount, customer, transfereeNum);
-    }*/
 
     public boolean checkMyAccounts(int account) {
         for (int acnt: myAccountList){

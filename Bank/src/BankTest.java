@@ -3,8 +3,10 @@ import org.junit.Test;
 
 import java.util.Arrays;
 
+import static junit.framework.TestCase.assertNotNull;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
 
 public class BankTest {
 
@@ -16,6 +18,7 @@ public class BankTest {
         bank = new Bank();
 
         bank.addEmployee(1);
+        bank.addEmployee(2);
 
         bank.addCustomer("Robbie Dings");
         bank.addAccount("Robbie Dings", 'c', 1110);
@@ -116,19 +119,21 @@ public class BankTest {
     }
 
     @Test
-    public void test1() {
+    public void testSimultaneousBalanceCheck() {
         assertEquals(bank.getBalance(bank.getCustomerByName("Robbie Dings"), 1110), 100, 0.0);
         assertEquals(bank.getBalance(bank.getCustomerByName("Billy Stopman"), 1110), 100, 0.0);
     }
 
     @Test
-    public void test2() {
-
+    public void testSimultaneousCheckAndDeposit() {
+        bank.deposit(bank.getCustomerByName("Robbie Dings"), 100, 1110);
+        assertEquals(bank.getBalance(bank.getCustomerByName("Billy Stopman"), 1110), 200, 0.0);
+        assertEquals(bank.getBalance(bank.getCustomerByName("Robbie Dings"), 1110), 200, 0.0);
     }
 
 
     @Test
-    public void test3() {
+    public void testSimultaneousDepositWithdrawAndCheck() {
 
         bank.withdraw(bank.getCustomerByName("Robbie Dings"), 100, 1110);
         bank.deposit(bank.getCustomerByName("Billy Stopman"), 100, 1110);
@@ -149,18 +154,16 @@ public class BankTest {
     }
 
     @Test
-    public void test4() {
+    public void testSimultaneousDepositStandingOrderAndCheck() {
 
     }
 
     @Test
-    public void test5() {
-
-    }
-
-    @Test
-    public void test6 {
-
+    public void testSimultaneousAccountModification() {
+        bank.alterCustomer(bank.getEmployeeById(1), bank.getCustomerByName("Robbie Dings"), "Dobbie Rings");
+        bank.alterCustomer(bank.getEmployeeById(1), bank.getCustomerByName("Robbie Dings"), "Dobbie Rings");
+        assertNotNull(bank.getCustomerByName("Dobbie Rings"));
+        assertNull(bank.getCustomerByName("Robbie Dings"));
     }
 
 
