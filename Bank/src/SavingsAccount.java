@@ -43,7 +43,6 @@ public class SavingsAccount extends Account {
         finally{
             fundsLock.unlock();
         }
-
     }
 
 

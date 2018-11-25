@@ -106,9 +106,16 @@ public class BankTest {
 
     @Test
     public void testSavings() {
-        bank.transfer(bank.getEmployeeById(1), 25, 1111, 1110);
+        bank.withdraw(bank.getCustomerByName("Billy Stopman"), 100, 1111);
+        assertEquals(bank.getBalance(bank.getCustomerByName("Billy Stopman"), 1111), 100, 0.0);
 
-        assertEquals(bank.getBalance(bank.getCustomerByName("Billy Stopman"), 1111), 75, 0.0);
+        bank.transfer(bank.getCustomerByName("Billy Stopman"), 25, 1110, 1111);
+        assertEquals(bank.getBalance(bank.getCustomerByName("Billy Stopman"), 1111), 125, 0.0);
+        assertEquals(bank.getBalance(bank.getCustomerByName("Billy Stopman"), 1110), 75, 0.0);
+
+        bank.transfer(bank.getEmployeeById(1), 25, 1111, 1110);
+        assertEquals(bank.getBalance(bank.getCustomerByName("Billy Stopman"), 1111), 100, 0.0);
+        assertEquals(bank.getBalance(bank.getCustomerByName("Billy Stopman"), 1110), 100, 0.0);
 
     }
 
