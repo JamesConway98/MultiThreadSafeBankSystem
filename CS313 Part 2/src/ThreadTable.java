@@ -25,7 +25,7 @@ public class ThreadTable extends JTable {
 
             dm = new DefaultTableModel(0,0);
             String header[] = new String[] { "Thread Name", "ID", "State",
-                    "Priority", "Daemon" };
+                    "Priority", "Daemon", "Thread Group" };
             dm.setColumnIdentifiers(header);
             this.setModel(dm);
 
@@ -36,6 +36,7 @@ public class ThreadTable extends JTable {
                 data.add(threadNoNulls.get(i).getState().toString());
                 data.add(Integer.toString(threadNoNulls.get(i).getPriority()));
                 data.add(Boolean.toString(threadNoNulls.get(i).isDaemon()));
+                data.add(threadNoNulls.get(i).getThreadGroup().getName());
                 dm.addRow(data);
             }
 
@@ -51,6 +52,7 @@ public class ThreadTable extends JTable {
             row.add(thread.getState().toString());
             row.add(thread.getPriority());
             row.add(Boolean.toString(thread.isDaemon()));
+            row.add(thread.getThreadGroup().getName());
             dm.addRow(row);
         }
 
